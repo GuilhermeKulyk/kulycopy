@@ -1,0 +1,119 @@
+<UserControl x:Class="KulyCopy.UI.CommandEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="clr-namespace:KulyCopy.UI">
+    <UserControl.Resources>
+        <ui:NullToVisibilityConverter x:Key="NullToVis" />
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+        </Style>
+        <Style x:Key="FieldBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="0,3" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel Grid.Column="0" Margin="0,0,12,0">
+            <WrapPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                <Button Content="Add" Click="OnAdd" Style="{StaticResource SmallButton}" Margin="0,0,4,4" />
+                <Button Content="Remove" Click="OnRemove" Style="{StaticResource SmallButton}" Margin="0,0,4,4" />
+                <Button Content="Duplicate" Click="OnDuplicate" Style="{StaticResource SmallButton}" Margin="0,0,4,4" />
+                <Button Content="▲" Click="OnUp" Style="{StaticResource SmallButton}" Margin="0,0,4,4" ToolTip="Move up" />
+                <Button Content="▼" Click="OnDown" Style="{StaticResource SmallButton}" Margin="0,0,4,4" ToolTip="Move down" />
+                <Button Content="Import…" Click="OnImport" Style="{StaticResource SmallButton}" Margin="0,0,4,4" />
+                <Button Content="Export…" Click="OnExport" Style="{StaticResource SmallButton}" Margin="0,0,4,4" />
+            </WrapPanel>
+            <ListBox x:Name="List" ItemsSource="{Binding Commands}" SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Enabled}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto"
+                      DataContext="{Binding SelectedItem, ElementName=List}"
+                      Visibility="{Binding SelectedItem, ElementName=List, Converter={StaticResource NullToVis}}">
+            <Grid Margin="0,0,6,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition />
+                    <RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition />
+                    <RowDefinition /><RowDefinition /><RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Name:" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+
+                <TextBlock Grid.Row="1" Text="Type:" Style="{StaticResource FieldLabel}" />
+                <WrapPanel Grid.Row="1" Grid.Column="1" Margin="0,2">
+                    <CheckBox Content="Automatic" IsChecked="{Binding Automatic}" Margin="0,2,16,2"
+                              ToolTip="Run for every new clipboard content" />
+                    <CheckBox Content="In menu" IsChecked="{Binding InMenu}" Margin="0,2,16,2"
+                              ToolTip="Show in the item context menu" />
+                    <CheckBox Content="Global shortcut" IsChecked="{Binding IsGlobalShortcut}" Margin="0,2,16,2"
+                              ToolTip="Run with a system-wide shortcut" />
+                    <CheckBox Content="Script" IsChecked="{Binding IsScript}" Margin="0,2,16,2"
+                              ToolTip="Only defines functions for other scripts" />
+                </WrapPanel>
+
+                <TextBlock Grid.Row="2" Text="Match text (regex):" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Match, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Apply only when the item text matches this regular expression" />
+
+                <TextBlock Grid.Row="3" Text="Match window (regex):" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Window, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Apply only when the source window title matches this regular expression" />
+
+                <TextBlock Grid.Row="4" Text="Input format:" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Apply only when the item has this format, e.g. text/plain or image/png" />
+
+                <TextBlock Grid.Row="5" Text="Output format:" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Output, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Format used to store the script output" />
+
+                <TextBlock Grid.Row="6" Text="Copy to tab:" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Tab, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Automatic: also store the item in this tab. Menu: add the selected items to this tab." />
+
+                <TextBlock Grid.Row="7" Text="Output tab:" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding OutputTab, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Store the script output as a new item in this tab" />
+
+                <TextBlock Grid.Row="8" Text="Shortcut (in window):" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding Shortcut, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="Shortcut inside the main window for menu commands, e.g. Ctrl+Shift+O" />
+
+                <TextBlock Grid.Row="9" Text="Global shortcut:" Style="{StaticResource FieldLabel}" />
+                <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding GlobalShortcut, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}"
+                         ToolTip="System-wide shortcut, e.g. Ctrl+Alt+V" />
+
+                <TextBlock Grid.Row="10" Text="Options:" Style="{StaticResource FieldLabel}" />
+                <WrapPanel Grid.Row="10" Grid.Column="1" Margin="0,2">
+                    <CheckBox Content="Remove item" IsChecked="{Binding Remove}" Margin="0,2,16,2"
+                              ToolTip="Automatic: do not store in the clipboard tab. Menu: remove the selected items afterwards." />
+                    <CheckBox Content="Hide window" IsChecked="{Binding HideWindow}" Margin="0,2,16,2"
+                              ToolTip="Hide the main window before running (menu commands)" />
+                </WrapPanel>
+
+                <TextBlock Grid.Row="11" Grid.ColumnSpan="2" Margin="0,8,0,4"
+                           Text="Script (JavaScript, CopyQ-style API: data(), str(), copy(), paste(), add(), tab(), ignore(), ...)" />
+                <TextBox Grid.Row="12" Grid.ColumnSpan="2" Style="{StaticResource EditorTextBox}" MinHeight="180"
+                         FontFamily="Consolas" Text="{Binding Cmd, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

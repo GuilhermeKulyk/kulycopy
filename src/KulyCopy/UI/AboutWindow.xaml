@@ -1,0 +1,25 @@
+<Window x:Class="KulyCopy.UI.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About KulyCopy" Width="460" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <StackPanel Margin="20">
+        <StackPanel Orientation="Horizontal">
+            <Image Source="pack://application:,,,/Assets/kulycopy.ico" Width="48" Height="48" Margin="0,0,14,0" />
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="KulyCopy" FontSize="22" FontWeight="SemiBold" />
+                <TextBlock x:Name="VersionText" Foreground="{DynamicResource TextSecondary}" />
+            </StackPanel>
+        </StackPanel>
+        <TextBlock Margin="0,14,0,0" TextWrapping="Wrap"
+                   Text="Open source clipboard manager for Windows, inspired by CopyQ: clipboard history with tabs, search, pinned items, notes, scriptable commands, global shortcuts and a command-line interface." />
+        <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Foreground="{DynamicResource TextSecondary}"
+                   Text="Released under the MIT License. Third-party components: Jint (BSD-2-Clause), Microsoft.Data.Sqlite (MIT)." />
+        <TextBlock x:Name="PathsText" Margin="0,10,0,0" TextWrapping="Wrap" Foreground="{DynamicResource TextSecondary}" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Open _config folder" Click="OnOpenConfig" Margin="0,0,8,0" MinWidth="120" />
+            <Button Content="Open _data folder" Click="OnOpenData" Margin="0,0,8,0" MinWidth="120" />
+            <Button Content="Close" IsCancel="True" IsDefault="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>

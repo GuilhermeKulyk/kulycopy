@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore KulyCopy.sln
+
+      - name: Build
+        run: dotnet build KulyCopy.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test KulyCopy.sln -c Release --no-build --verbosity normal
+
+      # Self-contained exe, portable zip, Inno Setup installer and unsigned MSIX (Store-ready).
+      - name: Package
+        shell: pwsh
+        run: ./build.ps1 -Msix
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kulycopy-${{ github.sha }}
+          path: |
+            dist/*.exe
+            dist/*.zip
+            dist/*.msix
+
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/*.exe
+            dist/*.zip
+            dist/*.msix

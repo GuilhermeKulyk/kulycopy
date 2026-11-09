@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MSIX manifest template for the Microsoft Store / sideloading. build.ps1 -Msix fills the placeholders:
+    {{IdentityName}}, {{Publisher}}, {{PublisherDisplayName}}  -> values from Partner Center ("Product identity")
+    {{Version}}                                                -> four-part version from the project file
+-->
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+         xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap uap5 desktop rescap">
+
+  <Identity Name="{{IdentityName}}"
+            Publisher="{{Publisher}}"
+            Version="{{Version}}"
+            ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>KulyCopy</DisplayName>
+    <PublisherDisplayName>{{PublisherDisplayName}}</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <Description>Clipboard manager with history, tabs, search, pinned items, notes and scriptable commands.</Description>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22621.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+    <Resource Language="pt-br" />
+  </Resources>
+
+  <Applications>
+    <Application Id="KulyCopy" Executable="kulycopy.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="KulyCopy"
+                          Description="Clipboard manager with history, tabs, search, pinned items, notes and scriptable commands."
+                          BackgroundColor="transparent"
+                          Square150x150Logo="Assets\Square150x150Logo.png"
+                          Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"
+                         Square310x310Logo="Assets\Square310x310Logo.png"
+                         Square71x71Logo="Assets\Square71x71Logo.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <!-- Appears in Windows Settings > Apps > Startup; off by default, the user turns it on. -->
+        <desktop:Extension Category="windows.startupTask" Executable="kulycopy.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="KulyCopyStartup" Enabled="false" DisplayName="KulyCopy" />
+        </desktop:Extension>
+        <!-- Lets "kulycopy" work from any terminal (command-line interface). -->
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="kulycopy.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap5:AppExecutionAlias>
+            <uap5:ExecutionAlias Alias="kulycopy.exe" />
+          </uap5:AppExecutionAlias>
+        </uap5:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

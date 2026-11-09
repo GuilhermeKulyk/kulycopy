@@ -1,0 +1,32 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Dark theme palette. Keys must match Light.xaml. -->
+    <SolidColorBrush x:Key="WindowBackground" Color="#1E1F24" />
+    <SolidColorBrush x:Key="PanelBackground" Color="#25262D" />
+    <SolidColorBrush x:Key="ControlBackground" Color="#2C2D35" />
+    <SolidColorBrush x:Key="ControlBorder" Color="#3C3E48" />
+    <SolidColorBrush x:Key="TextForeground" Color="#E6E7EB" />
+    <SolidColorBrush x:Key="TextSecondary" Color="#9A9EA8" />
+    <SolidColorBrush x:Key="Accent" Color="#5B9BFF" />
+    <SolidColorBrush x:Key="AccentForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="SelectionBackground" Color="#2F4A78" />
+    <SolidColorBrush x:Key="SelectionForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="HoverBackground" Color="#30323B" />
+    <SolidColorBrush x:Key="TabBarBackground" Color="#1A1B20" />
+    <SolidColorBrush x:Key="TabActiveBackground" Color="#25262D" />
+    <SolidColorBrush x:Key="MenuBackground" Color="#25262D" />
+    <SolidColorBrush x:Key="MenuBorder" Color="#3C3E48" />
+    <SolidColorBrush x:Key="ScrollBarThumb" Color="#4A4D58" />
+    <SolidColorBrush x:Key="ScrollBarThumbHover" Color="#5E626E" />
+    <SolidColorBrush x:Key="PinForeground" Color="#F2C14E" />
+    <SolidColorBrush x:Key="NotesForeground" Color="#E3C66B" />
+    <SolidColorBrush x:Key="NotesBackground" Color="#33301F" />
+    <SolidColorBrush x:Key="RowNumberForeground" Color="#6F7380" />
+    <SolidColorBrush x:Key="PlaceholderForeground" Color="#6F7380" />
+    <SolidColorBrush x:Key="EditorBackground" Color="#1E1F24" />
+    <SolidColorBrush x:Key="ImageBackground" Color="#2C2D35" />
+    <SolidColorBrush x:Key="DangerForeground" Color="#FF6B6B" />
+    <SolidColorBrush x:Key="SuccessForeground" Color="#5CC98A" />
+
+</ResourceDictionary>
